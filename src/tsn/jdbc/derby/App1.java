@@ -12,47 +12,47 @@ public class App1 {
 
     public static void main(String[] args) {
         try {
-            // Имя подкаталога с базой данных
+            // РРјСЏ РїРѕРґРєР°С‚Р°Р»РѕРіР° СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…
             String name_base_dir = "MyBase";
 
-            // Определение каталога запуска программы (текущего каталога)
+            // РћРїСЂРµРґРµР»РµРЅРёРµ РєР°С‚Р°Р»РѕРіР° Р·Р°РїСѓСЃРєР° РїСЂРѕРіСЂР°РјРјС‹ (С‚РµРєСѓС‰РµРіРѕ РєР°С‚Р°Р»РѕРіР°)
             String prog_dir = new File(".").getAbsoluteFile().getParentFile().getAbsolutePath()
                     + System.getProperty("file.separator");
 
-            // Установка каталога БД
+            // РЈСЃС‚Р°РЅРѕРІРєР° РєР°С‚Р°Р»РѕРіР° Р‘Р”
             System.setProperty("derby.system.home", prog_dir + name_base_dir);
 
-            // Запуск сервера
+            // Р—Р°РїСѓСЃРє СЃРµСЂРІРµСЂР°
             NetworkServerControl server = new NetworkServerControl(InetAddress.getByName("localhost"), 1527);
             server.start(null);
 
-            // Загрузка драйвера JavaDB
+            // Р—Р°РіСЂСѓР·РєР° РґСЂР°Р№РІРµСЂР° JavaDB
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
 
-            // Создание свойств соединения с базой данных
+            // РЎРѕР·РґР°РЅРёРµ СЃРІРѕР№СЃС‚РІ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…
             Properties authorization = new Properties();
-            authorization.setProperty("user", "tsn"); // Зададим имя пользователя БД
-            authorization.setProperty("password", "tsn"); // Зададим пароль доступа в БД
+            authorization.setProperty("user", "tsn"); // Р—Р°РґР°РґРёРј РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Р‘Р”
+            authorization.setProperty("password", "tsn"); // Р—Р°РґР°РґРёРј РїР°СЂРѕР»СЊ РґРѕСЃС‚СѓРїР° РІ Р‘Р”
 
-            // Создание соединения с базой данных
+            // РЎРѕР·РґР°РЅРёРµ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…
             Connection connection = DriverManager.getConnection("jdbc:derby://localhost:1527/disks", authorization);
 
-            // Создание оператора доступа к базе данных
+            // РЎРѕР·РґР°РЅРёРµ РѕРїРµСЂР°С‚РѕСЂР° РґРѕСЃС‚СѓРїР° Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…
             java.sql.Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
 
-            // Выполнение запроса к базе данных
-            statement.execute("select ID, NAME_DISK, PRICE_PUR, PRICE_SEL from disk_1"); // Выборка таблицы
-            // Получение набора данных
+            // Р’С‹РїРѕР»РЅРµРЅРёРµ Р·Р°РїСЂРѕСЃР° Рє Р±Р°Р·Рµ РґР°РЅРЅС‹С…
+            statement.execute("select ID, NAME_DISK, PRICE_PUR, PRICE_SEL from disk_1"); // Р’С‹Р±РѕСЂРєР° С‚Р°Р±Р»РёС†С‹
+            // РџРѕР»СѓС‡РµРЅРёРµ РЅР°Р±РѕСЂР° РґР°РЅРЅС‹С…
             ResultSet table = statement.getResultSet();
 
-            table.first(); // Выведем имена полей
+            table.first(); // Р’С‹РІРµРґРµРј РёРјРµРЅР° РїРѕР»РµР№
             for (int j = 1; j <= table.getMetaData().getColumnCount(); j++) {
                 System.out.print(table.getMetaData().getColumnName(j) + "\t\t");
             }
             System.out.println();
 
-            table.beforeFirst(); // Выведем записи таблицы
+            table.beforeFirst(); // Р’С‹РІРµРґРµРј Р·Р°РїРёСЃРё С‚Р°Р±Р»РёС†С‹
             while (table.next()) {
                 for (int j = 1; j <= table.getMetaData().getColumnCount(); j++) {
                     System.out.print(table.getString(j) + "\t\t");
@@ -60,10 +60,10 @@ public class App1 {
                 System.out.println();
             }
 
-            if (table != null) { table.close(); } // Закрытие набора данных
-            if (statement != null) { statement.close(); } // Закрытие базы данных
-            if (connection != null) { connection.close(); } // Отключение от базы данных
-            server.shutdown(); // Выключение сервера
+            if (table != null) { table.close(); } // Р—Р°РєСЂС‹С‚РёРµ РЅР°Р±РѕСЂР° РґР°РЅРЅС‹С…
+            if (statement != null) { statement.close(); } // Р—Р°РєСЂС‹С‚РёРµ Р±Р°Р·С‹ РґР°РЅРЅС‹С…
+            if (connection != null) { connection.close(); } // РћС‚РєР»СЋС‡РµРЅРёРµ РѕС‚ Р±Р°Р·С‹ РґР°РЅРЅС‹С…
+            server.shutdown(); // Р’С‹РєР»СЋС‡РµРЅРёРµ СЃРµСЂРІРµСЂР°
         } catch (Exception e) {
             System.err.println("Error accessing database!");
         }
